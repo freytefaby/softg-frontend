@@ -1,8 +1,21 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
+const baseUrl = 'http://localhost/soft-g/backend/public/api'
 export const environment = {
+  base : baseUrl,
+
+  //Maps
+  CargarRutas : baseUrl + '/maps',
+  CargarDetalleRuta : baseUrl + '/maps/detalle',
+  crearRuta : baseUrl + '/maps/crearRuta',
+  cargarExcel : baseUrl + '/excel/cargar',
+
+  //others
+  descargarArchivo : baseUrl+'/descargarDatos',
+  crearUsuario : baseUrl + '/usuarios/crear',
+  login : baseUrl + '/usuarios/login',
+  
   production: false
 };
 

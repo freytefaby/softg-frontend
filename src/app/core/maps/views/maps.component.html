@@ -1,0 +1,83 @@
+<div class="row m-1">
+
+    <div class="col-8">
+        <div style="height: 400px" id="map" #map></div>
+    </div>
+
+    <div class="col-4">
+        <div class="row mb-3">
+            <p>Cargar rutas:</p>
+            <select class="form-control" (change)="cambiaruta()" [(ngModel)]="selectRuta">
+                <option value="0">Seleccione ruta: </option>
+                <option value="{{item.id}}" *ngFor="let item of rutas">{{item.descripcion}}</option>
+               
+            </select>
+        </div>
+
+         <div class="row mb-3">
+            <button  class="btn btn-primary btn-block"  (click)="openModal(template)">Crear un marcador</button> 
+         </div>
+        <div class="row" *ngIf="Imarkers.length > 0">
+            <ul class="list-group mb-3" *ngFor="let item of Imarkers">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{item.title}}
+                  <span class="badge bg-primary rounded-pill">{{item.codigo}}</span><br>
+                  <button  (click)="borrarRuta(item.codigo)" class="badge bg-danger rounded-pill">Eliminar Marcador</button>
+                </li>
+               
+              </ul>
+                <button (click)="borrarRuta()" class="btn btn-warning btn-block mb-4">Borrar todos los marcadores</button>
+                <p>Nombre de la ruta: </p>
+                <input type="text" class="form-control mb-3" [(ngModel)]="nombreruta" >
+                <button class="btn btn-success btn-block"  [disabled]="nombreruta == null || nombreruta == ''" (click)="agregarRuta()">Guardar ruta</button>
+              
+              
+        </div>
+
+    
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Guardar ubicación del marcador</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form  [formGroup]="MarkerForm" (ngSubmit)="agregarmarcador()">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Nombre del marcador</label>
+                <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
+                <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('nombre').hasError('required') && (MarkerForm.get('nombre').dirty || MarkerForm.get('nombre').touched) ">Nombre es requerido</div>
+            </div>
+    
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Latitud</label>
+                <input type="number" class="form-control" formControlName="latitud" placeholder="Latitud">
+                <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('latitud').hasError('required') && (MarkerForm.get('latitud').dirty || MarkerForm.get('latitud').touched) ">Latitud es requerido</div>
+              </div>
+    
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Longitud</label>
+                <input type="number" class="form-control" formControlName="longitud" placeholder="Longitud">
+                <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('longitud').hasError('required') && (MarkerForm.get('longitud').dirty || MarkerForm.get('longitud').touched) ">Longitud es requerido</div>
+              </div>
+    
+              <div class="mb-3">
+                <button type="button" (click)="obtenerCordenadas(true)"class="btn btn-primary">Obtener mi ubicacion Actual</button>
+              </div>
+    
+              <div class="mb-3">
+                <button type="submit" class="btn btn-success btn-block"  [disabled]="MarkerForm.invalid">Enviar</button>
+              </div>
+        </form>
+        
+
+          
+
+          
+    </div>
+  </ng-template>
+

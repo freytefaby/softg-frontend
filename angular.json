@@ -24,7 +24,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": []
           },
@@ -119,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "soft-g-front"
+    }
+  },
+  "defaultProject": "soft-g-front",
+  "cli": {
+    "analytics": "aa8a4f4a-8249-4314-88f3-c4cd3ae02036"
+  }
 }

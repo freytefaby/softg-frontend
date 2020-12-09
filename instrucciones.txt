@@ -1,0 +1,1 @@
+En el archivo environments.ts cambiar la ruta del backend a la que se instale

@@ -1,0 +1,19 @@
+<div class="login-form">
+    <form [formGroup]="registerForm" (ngSubmit)="agregarUsuario()">
+        <h2 class="text-center">Soft-G net</h2>       
+        <div class="form-group">
+            <input type="email" class="form-control" placeholder="email" formControlName="email" >
+            <div class="form-control-feedback" style="color:red" *ngIf="registerForm.get('email').hasError('required') && (registerForm.get('email').dirty || registerForm.get('email').touched) ">Nombre es requerido</div>
+            <div class="form-control-feedback" style="color:red" *ngIf="registerForm.get('email').hasError('email') && (registerForm.get('email').dirty || registerForm.get('email').touched) ">Email incorrecto</div>
+        </div> <br>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" formControlName="password" >
+            <div class="form-control-feedback" style="color:red" *ngIf="registerForm.get('password').hasError('required') && (registerForm.get('password').dirty || registerForm.get('password').touched) ">Nombre es requerido</div>
+        </div>
+        <div class="form-group"><br>
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="registerForm.invalid || loading">Crear usuario</button>
+        </div>
+          
+    </form>
+   
+</div>
