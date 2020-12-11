@@ -1,9 +1,9 @@
-import { AfterViewInit, Component,OnInit,TemplateRef  } from '@angular/core';
+import { AfterViewInit, Component,OnInit,TemplateRef, ViewChild  } from '@angular/core';
 import 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/images/marker-icon.png';
 import * as L from 'leaflet';
 import { IMarker } from '../../models/Marker';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MapsService} from '../../../Services/Maps/maps.service';
 import Swal from 'sweetalert2'
@@ -13,7 +13,9 @@ import Swal from 'sweetalert2'
   templateUrl: './maps.component.html',
   styleUrls: ['./maps.component.css']
 })
+
 export class MapsComponent implements AfterViewInit, OnInit {
+  @ViewChild('childModal', { static: false }) childModal: ModalDirective;
   Imarkers : IMarker[] = [];
   coordinates: Array<any> = [];
   coordenadasUsuario  = {
@@ -26,15 +28,12 @@ export class MapsComponent implements AfterViewInit, OnInit {
   polyline : L.Polyline = L.polyline(this.coordinates,{color:'red'});
   markers = L.layerGroup();
 
-  /*MODAL*/
-  modalRef: BsModalRef;
 
   /*FORMULARIOS*/
   MarkerForm : FormGroup;
   selectRuta : any = 0;
   nombreruta : string = null;
-  constructor(private modalService: BsModalService,
-              private FormBuilder : FormBuilder,
+  constructor(private FormBuilder : FormBuilder,
               private _MapService : MapsService) { }
 
   ngAfterViewInit(): void{
@@ -43,7 +42,7 @@ export class MapsComponent implements AfterViewInit, OnInit {
 
   ngOnInit(){
     this.cargarRutas();
-    this.obtenerCordenadas(false);
+    this.obtenerCordenadas();
     this.markerControl();
   }
 
@@ -69,6 +68,14 @@ export class MapsComponent implements AfterViewInit, OnInit {
     });
 
     mainLayer.addTo(this.map);
+
+    this.map.on('click', (e)=>{
+      this.childModal.show();
+     console.log(e['latlng']);
+     this.MarkerForm.get('latitud').setValue(e['latlng']["lat"]);
+     this.MarkerForm.get('longitud').setValue(e['latlng']["lng"])
+     
+      });
     
   }
 
@@ -83,7 +90,7 @@ export class MapsComponent implements AfterViewInit, OnInit {
   agregarmarcador(){
     if(this.MarkerForm.valid){
       let id = "R"+Math.floor(Math.random()*999999);
-      let marker = L.marker([10.9227327,-74.7922199],{title:this.MarkerForm.get('nombre').value,draggable:true}); //creando un marcador ubicandolo en un sitio
+      let marker = L.marker([this.MarkerForm.get('latitud').value,this.MarkerForm.get('longitud').value],{title:this.MarkerForm.get('nombre').value,draggable:true}); //creando un marcador ubicandolo en un sitio
       marker['id'] = id;   
       this.markers.addLayer(marker); //agregamos la capa en un grupo de capas 
       marker.bindPopup(this.MarkerForm.get('nombre').value); //poniendole una descripcion al marcador
@@ -113,7 +120,7 @@ export class MapsComponent implements AfterViewInit, OnInit {
         });
     
         this.MarkerForm.reset();
-        this.modalService.hide();
+        this.childModal.hide();
     }   
   }
   
@@ -199,21 +206,12 @@ export class MapsComponent implements AfterViewInit, OnInit {
 
   }
 
-  openModal(template: TemplateRef<any>){
-    this.modalRef = this.modalService.show(template);
-  }
 
-  obtenerCordenadas(llenarForm:boolean){
+  obtenerCordenadas(){
     navigator.geolocation.getCurrentPosition(posicion =>{
       this.coordenadasUsuario.latitud = posicion.coords.latitude;
       this.coordenadasUsuario.longitud = posicion.coords.longitude;
       this.map.panTo(new L.LatLng(posicion.coords.latitude, posicion.coords.longitude))
-      
-      
-      if(llenarForm){
-        this.MarkerForm.get('latitud').setValue(posicion.coords.latitude)
-        this.MarkerForm.get('longitud').setValue(posicion.coords.longitude) 
-      }
 
     },error=>{
       console.log("ENTRO EN EL ERROR");

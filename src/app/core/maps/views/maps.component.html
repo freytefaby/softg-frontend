@@ -14,9 +14,6 @@
             </select>
         </div>
 
-         <div class="row mb-3">
-            <button  class="btn btn-primary btn-block"  (click)="openModal(template)">Crear un marcador</button> 
-         </div>
         <div class="row" *ngIf="Imarkers.length > 0">
             <ul class="list-group mb-3" *ngFor="let item of Imarkers">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -38,46 +35,45 @@
     </div>
 </div>
 
-<ng-template #template>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Guardar ubicación del marcador</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-        <form  [formGroup]="MarkerForm" (ngSubmit)="agregarmarcador()">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Nombre del marcador</label>
-                <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
-                <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('nombre').hasError('required') && (MarkerForm.get('nombre').dirty || MarkerForm.get('nombre').touched) ">Nombre es requerido</div>
-            </div>
-    
-              <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Latitud</label>
-                <input type="number" class="form-control" formControlName="latitud" placeholder="Latitud">
-                <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('latitud').hasError('required') && (MarkerForm.get('latitud').dirty || MarkerForm.get('latitud').touched) ">Latitud es requerido</div>
-              </div>
-    
-              <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Longitud</label>
-                <input type="number" class="form-control" formControlName="longitud" placeholder="Longitud">
-                <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('longitud').hasError('required') && (MarkerForm.get('longitud').dirty || MarkerForm.get('longitud').touched) ">Longitud es requerido</div>
-              </div>
-    
-              <div class="mb-3">
-                <button type="button" (click)="obtenerCordenadas(true)"class="btn btn-primary">Obtener mi ubicacion Actual</button>
-              </div>
-    
-              <div class="mb-3">
-                <button type="submit" class="btn btn-success btn-block"  [disabled]="MarkerForm.invalid">Enviar</button>
-              </div>
-        </form>
+  <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1"
+  role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog modal-md">
+ <div class="modal-content">
+   <div class="modal-header">
+     <h4 id="dialog-child-name" class="modal-title pull-left">Guardar ubicación del marcador</h4>
+     <button type="button" class="close pull-right" aria-label="Close" (click)="childModal.hide()">
+       <span aria-hidden="true">&times;</span>
+     </button>
+   </div>
+   <div class="modal-body">
+    <form  [formGroup]="MarkerForm" (ngSubmit)="agregarmarcador()">
+      <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Nombre del marcador</label>
+          <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
+          <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('nombre').hasError('required') && (MarkerForm.get('nombre').dirty || MarkerForm.get('nombre').touched) ">Nombre es requerido</div>
+      </div>
+
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Latitud</label>
+          <input type="number" class="form-control" formControlName="latitud" placeholder="Latitud" disabled>
+          <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('latitud').hasError('required') && (MarkerForm.get('latitud').dirty || MarkerForm.get('latitud').touched) ">Latitud es requerido</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Longitud</label>
+          <input type="number" class="form-control" formControlName="longitud" placeholder="Longitud" disabled>
+          <div class="form-control-feedback" style="color:red" *ngIf="MarkerForm.get('longitud').hasError('required') && (MarkerForm.get('longitud').dirty || MarkerForm.get('longitud').touched) ">Longitud es requerido</div>
+        </div>
+
         
 
-          
+        <div class="mb-3">
+          <button type="submit" class="btn btn-success btn-block"  [disabled]="MarkerForm.invalid">Enviar</button>
+        </div>
+  </form>
+   </div>
+ </div>
+</div>
+</div>
 
-          
-    </div>
-  </ng-template>
 

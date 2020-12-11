@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ExcelComponent } from './core/maps/views/excel/excel.component';
+import { Interceptors } from './Services/Interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,9 @@ import { ExcelComponent } from './core/maps/views/excel/excel.component';
     BrowserModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    {provide : HTTP_INTERCEPTORS,useClass : Interceptors, multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

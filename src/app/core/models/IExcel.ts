@@ -1,8 +1,9 @@
 export interface IExcel{
-    nombres:string,
-    apellidos:string,
-    fecha:string,
-    horaini:string,
-    horafin:string,
-    diferencia : string
+    driver_id:string,
+    last_name:string,
+    first_name:string,
+    actual_check_in:string,
+    actual_drop_off:string,
+    difftime : string,
+    fecha : string
 }
